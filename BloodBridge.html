@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLOOD BRIDGE</title>
+  <style>
+    :root {
+      --bg: #0f172a;          /* slate-900 */
+      --panel: #111827;       /* gray-900 */
+      --soft: #1f2937;        /* gray-800 */
+      --muted: #94a3b8;       /* slate-400 */
+      --text: #e5e7eb;        /* gray-200 */
+      --accent: #ef4444;      /* red-500 */
+      --accent-2: #22c55e;    /* green-500 */
+      --accent-3: #3b82f6;    /* blue-500 */
+      --round: 16px;
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+    }
+
+    * { box-sizing: border-box; }
+    body { margin:0; background: linear-gradient(180deg, #0b1023, #0f172a); color: var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; }
+
+    header {
+      position: sticky; top:0; z-index: 50; backdrop-filter: blur(8px);
+      background: rgba(17,24,39,.7); border-bottom: 1px solid rgba(148,163,184,.15);
+    }
+    .container { width: min(1100px, 92%); margin-inline: auto; }
+    .nav { display:flex; align-items:center; justify-content:space-between; padding: 14px 0; }
+    .brand { display:flex; align-items:center; gap:10px; font-weight: 800; letter-spacing:.4px; }
+    .brand .logo { width:38px; height:38px; border-radius: 10px; display:grid; place-items:center; background: radial-gradient(circle at 30% 30%, #ef4444, #991b1b); box-shadow: var(--shadow); }
+    .brand span { font-size: 1rem; }
+
+    .tabs { display:flex; gap:8px; flex-wrap: wrap; }
+    .tab-btn { border:1px solid rgba(148,163,184,.2); background: var(--soft); color: var(--text); padding:10px 14px; border-radius: 999px; cursor:pointer; transition: .2s ease; font-weight:600; }
+    .tab-btn:hover { transform: translateY(-1px); }
+    .tab-btn.active { background: var(--accent); border-color: transparent; }
+
+    .hero { display:grid; grid-template-columns: 1.2fr .8fr; gap:26px; padding: 28px 0 18px; align-items:center; }
+    .card { background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border: 1px solid rgba(148,163,184,.15); border-radius: var(--round); box-shadow: var(--shadow); }
+    .pad { padding: 18px; }
+
+    h1 { margin:0 0 10px; font-size: clamp(1.3rem, 1.6rem + 1vw, 2.2rem); }
+    p.muted { color: var(--muted); margin-top:0; }
+    .stats { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top:12px; }
+    .stat { background: var(--soft); padding: 14px; border-radius: 14px; border: 1px solid rgba(148,163,184,.15);
+            display:flex; align-items:center; justify-content:space-between; }
+    .stat strong { font-size: 1.1rem; }
+
+    .grid { display:grid; gap: 16px; }
+    @media (min-width: 900px) { .grid.cols-2 { grid-template-columns: repeat(2, 1fr); } }
+
+    form { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    form .full { grid-column: 1/-1; }
+    label { font-size:.9rem; color: var(--muted); display:block; margin: 4px 0 6px; }
+    input, select, textarea { width:100%; background: #0b1023; border:1px solid rgba(148,163,184,.25); color: var(--text);
+      padding: 10px 12px; border-radius: 12px; outline:none; }
+    textarea { min-height: 80px; }
+
+    .actions { display:flex; gap:10px; align-items:center; }
+    .btn { border:none; padding: 10px 14px; border-radius: 12px; font-weight:700; cursor:pointer; transition:.2s; }
+    .btn.primary { background: var(--accent-3); color:white; }
+    .btn.danger { background: var(--accent); color:white; }
+    .btn.success { background: var(--accent-2); color:white; }
+    .btn.ghost { background: transparent; border:1px solid rgba(148,163,184,.25); color: var(--text); }
+    .btn:hover { transform: translateY(-1px); }
+
+    table { width:100%; border-collapse: collapse; }
+    th, td { text-align:left; padding: 10px 8px; border-bottom: 1px dashed rgba(148,163,184,.2); font-size: .95rem; }
+    th { color: var(--muted); font-weight: 700; position: sticky; top: 62px; background: var(--panel); }
+
+    .section { margin: 10px 0 26px; }
+    .section h2 { margin:0 0 6px; font-size: 1.2rem; }
+
+    .pill { padding: 6px 10px; border-radius: 999px; background: rgba(148,163,184,.15); display:inline-block; font-size:.8rem; }
+
+    footer { text-align:center; color: var(--muted); padding: 24px 0 46px; font-size:.9rem; }
+    .notice { background: #0b1329; border: 1px dashed rgba(148,163,184,.35); border-radius: 14px; padding: 10px 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">🩸</div>
+        <span>BLOOD BRIDGE</span>
+      </div>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+        <button class="tab-btn" data-tab="donate">Donate Blood</button>
+        <button class="tab-btn" data-tab="request">Patient Request</button>
+        <button class="tab-btn" data-tab="directory">Directory</button>
+        <button class="tab-btn" data-tab="about">About</button>
+        
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO / DASHBOARD -->
+    <section id="dashboard" class="tab card pad">
+      <div class="hero">
+        <div>
+          <h1>Save Lives in Minutes</h1>
+          <p class="muted">Register as a donor or raise a blood request for a patient. The system matches requests with compatible donors and keeps everything saved in your browser (localStorage). No backend required.</p>
+
+          <div class="stats">
+            <div class="stat"><span>Donors</span><strong id="stat-donors">0</strong></div>
+            <div class="stat"><span>Requests</span><strong id="stat-requests">0</strong></div>
+            <div class="stat"><span>Potential Matches</span><strong id="stat-matches">0</strong></div>
+          </div>
+
+          <div class="section" style="margin-top:14px;">
+            <div class="notice">🔒 Demo app: data is stored locally in your browser only. Export/Import is available in Directory → More.</div>
+          </div>
+
+          <div class="actions" style="margin-top:14px;">
+            <button class="btn primary" onclick="goTab('donate')">Become a Donor</button>
+            <button class="btn success" onclick="goTab('request')">Raise a Request</button>
+            <button class="btn ghost" onclick="seedDemoData()">Load Demo Data</button>
+          </div>
+        </div>
+        <div class="card pad">
+          <h2 style="margin:0 0 10px;">Compatibility Guide</h2>
+          <p class="muted">Blood group compatibility matrix (Donor → Recipient)</p>
+          <table>
+            <thead>
+              <tr><th>Donor</th><th>Can donate to</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>O−</td><td>All groups</td></tr>
+              <tr><td>O+</td><td>O+, A+, B+, AB+</td></tr>
+              <tr><td>A−</td><td>A−, A+, AB−, AB+</td></tr>
+              <tr><td>A+</td><td>A+, AB+</td></tr>
+              <tr><td>B−</td><td>B−, B+, AB−, AB+</td></tr>
+              <tr><td>B+</td><td>B+, AB+</td></tr>
+              <tr><td>AB−</td><td>AB−, AB+</td></tr>
+              <tr><td>AB+</td><td>AB+</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- DONATE FORM -->
+    <section id="donate" class="tab card pad" hidden>
+      <div class="section">
+        <h2>Donor Registration</h2>
+        <p class="muted">Fill in your details below to be listed as an available donor.</p>
+      </div>
+      <form id="donorForm">
+        <div>
+          <label>Full Name</label>
+          <input name="name" required placeholder="e.g., Aisha Khan" />
+        </div>
+        <div>
+          <label>Age</label>
+          <input name="age" type="number" min="18" max="65" required placeholder="18–65" />
+        </div>
+        <div>
+          <label>Gender</label>
+          <select name="gender" required>
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label>Blood Group</label>
+          <select name="blood" required>
+            <option value="">Select</option>
+            <option>O-</option><option>O+</option>
+            <option>A-</option><option>A+</option>
+            <option>B-</option><option>B+</option>
+            <option>AB-</option><option>AB+</option>
+          </select>
+        </div>
+        <div>
+          <label>Phone</label>
+          <input name="phone" type="tel" pattern="[0-9]{10}" required placeholder="10-digit number" />
+        </div>
+        <div>
+          <label>Email</label>
+          <input name="email" type="email" placeholder="optional" />
+        </div>
+        <div>
+          <label>City</label>
+          <input name="city" required placeholder="e.g., Hyderabad" />
+        </div>
+        <div>
+          <label>Last Donation Date</label>
+          <input name="lastDonation" type="date" />
+        </div>
+        <div class="full">
+          <label>Notes</label>
+          <textarea name="notes" placeholder="Any medical notes, availability, etc."></textarea>
+        </div>
+        <div class="full actions">
+          <button class="btn primary" type="submit">Save Donor</button>
+          <button class="btn ghost" type="reset">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- PATIENT REQUEST FORM -->
+    <section id="request" class="tab card pad" hidden>
+      <div class="section">
+        <h2>Raise a Blood Request</h2>
+        <p class="muted">Provide patient and hospital details to notify potential donors.</p>
+      </div>
+      <form id="requestForm">
+        <div>
+          <label>Patient Name</label>
+          <input name="patient" required placeholder="e.g., Rohan Verma" />
+        </div>
+        <div>
+          <label>Required Blood Group</label>
+          <select name="blood" required>
+            <option value="">Select</option>
+            <option>O-</option><option>O+</option>
+            <option>A-</option><option>A+</option>
+            <option>B-</option><option>B+</option>
+            <option>AB-</option><option>AB+</option>
+          </select>
+        </div>
+        <div>
+          <label>Units Needed</label>
+          <input name="units" type="number" min="1" max="10" required placeholder="e.g., 2" />
+        </div>
+        <div>
+          <label>Urgency</label>
+          <select name="urgency" required>
+            <option value="">Select</option>
+            <option>Immediate</option>
+            <option>Within 24 hours</option>
+            <option>Within 3 days</option>
+          </select>
+        </div>
+        <div>
+          <label>Hospital</label>
+          <input name="hospital" required placeholder="Hospital name" />
+        </div>
+        <div>
+          <label>City</label>
+          <input name="city" required placeholder="e.g., Hyderabad" />
+        </div>
+        <div>
+          <label>Contact Number</label>
+          <input name="contact" type="tel" pattern="[0-9]{10}" required placeholder="10-digit number" />
+        </div>
+        <div>
+          <label>Alternate Contact</label>
+          <input name="alt" type="tel" pattern="[0-9]{10}" placeholder="optional" />
+        </div>
+        <div class="full">
+          <label>Notes</label>
+          <textarea name="notes" placeholder="Ward/Bed, doctor, other info"></textarea>
+        </div>
+        <div class="full actions">
+          <button class="btn success" type="submit">Submit Request</button>
+          <button class="btn ghost" type="reset">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- DIRECTORY & MATCHING -->
+    <section id="directory" class="tab" hidden>
+      <div class="grid cols-2">
+        <div class="card pad">
+          <div class="section">
+            <h2>Donor Directory</h2>
+            <p class="muted">Filter and manage registered donors.</p>
+          </div>
+          <div class="actions" style="margin-bottom:8px; gap:8px; flex-wrap:wrap;">
+            <select id="filterDonorBlood" class="pill" onchange="render()">
+              <option value="">All Blood Groups</option>
+              <option>O-</option><option>O+</option>
+              <option>A-</option><option>A+</option>
+              <option>B-</option><option>B+</option>
+              <option>AB-</option><option>AB+</option>
+            </select>
+            <input id="searchDonorCity" class="pill" placeholder="Filter by city" oninput="render()" />
+            <button class="btn ghost" onclick="exportData()">Export</button>
+            <label class="btn ghost" for="importFile">Import</label>
+            <input id="importFile" type="file" accept="application/json" hidden />
+            <button class="btn danger" onclick="clearAll()">Clear All</button>
+          </div>
+          <div style="overflow:auto; max-height: 360px;">
+            <table id="donorsTable">
+              <thead>
+                <tr>
+                  <th>Name</th><th>Blood</th><th>City</th><th>Phone</th><th>Last Donation</th><th></th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card pad">
+          <div class="section">
+            <h2>Patient Requests</h2>
+            <p class="muted">Active requests. Click "Match" to find compatible donors.</p>
+          </div>
+          <div class="actions" style="margin-bottom:8px; gap:8px; flex-wrap:wrap;">
+            <select id="filterReqBlood" class="pill" onchange="render()">
+              <option value="">All Blood Groups</option>
+              <option>O-</option><option>O+</option>
+              <option>A-</option><option>A+</option>
+              <option>B-</option><option>B+</option>
+              <option>AB-</option><option>AB+</option>
+            </select>
+            <input id="searchReqCity" class="pill" placeholder="Filter by city" oninput="render()" />
+          </div>
+          <div style="overflow:auto; max-height: 360px;">
+            <table id="requestsTable">
+              <thead>
+                <tr>
+                  <th>Patient</th><th>Blood</th><th>Units</th><th>City</th><th>Urgency</th><th>Contact</th><th></th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card pad" style="margin-top:16px;">
+        <div class="section">
+          <h2>Match Results</h2>
+          <p class="muted">Shows compatible donors for the last selected request, prioritised by city & recent donation.</p>
+        </div>
+        <div style="overflow:auto; max-height: 360px;">
+          <table id="matchesTable">
+            <thead>
+              <tr>
+                <th>Donor</th><th>Blood</th><th>City</th><th>Phone</th><th>Last Donation</th><th>Score</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="tab card pad" hidden>
+      <h2>About This Demo</h2>
+      <p class="muted">This is a client‑only prototype to help you kickstart a Blood Bank Management System using only HTML, CSS, and JavaScript. You can hook it to a backend (Node/Express, Python/Django, PHP/MySQL) later.</p>
+      <ul>
+        <li>📦 Data saved in <strong>localStorage</strong></li>
+        <li>🧮 Accurate ABO/Rh compatibility matching</li>
+        <li>🔍 Filters + search on donors and requests</li>
+        <li>📤 Export/📥 Import JSON</li>
+        <li>🧪 Seed demo data</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="container">Made with ❤ — demo only. Verify donors medically before use.</footer>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab-btn');
+    tabs.forEach(b => b.addEventListener('click', () => goTab(b.dataset.tab)));
+    function goTab(id){
+      document.querySelectorAll('.tab').forEach(t => t.hidden = true);
+      document.getElementById(id).hidden = false;
+      tabs.forEach(b => b.classList.toggle('active', b.dataset.tab===id));
+      window.scrollTo({ top:0, behavior:'smooth' });
+    }
+
+    // Data layer
+    const LS_KEY = 'bbms:data:v1';
+    let state = load();
+    function load(){
+      try { return JSON.parse(localStorage.getItem(LS_KEY)) || { donors:[], requests:[] }; } catch(e){ return { donors:[], requests:[] }; }
+    }
+    function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+
+    // Helper: date format & days since
+    function fmtDate(d){ if(!d) return '—'; const x=new Date(d); return isNaN(x)? '—' : x.toISOString().slice(0,10); }
+    function daysSince(d){ if(!d) return Infinity; const ms = Date.now() - new Date(d).getTime(); return Math.floor(ms/86400000); }
+
+    // Compatibility map (recipient -> acceptable donors)
+    const COMP = {
+      'O-': ['O-'],
+      'O+': ['O-','O+'],
+      'A-': ['O-','A-'],
+      'A+': ['O-','O+','A-','A+'],
+      'B-': ['O-','B-'],
+      'B+': ['O-','O+','B-','B+'],
+      'AB-': ['O-','A-','B-','AB-'],
+      'AB+': ['O-','O+','A-','A+','B-','B+','AB-','AB+']
+    };
+
+    // Forms: Donor
+    const donorForm = document.getElementById('donorForm');
+    donorForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const fd = new FormData(donorForm);
+      const entry = Object.fromEntries(fd.entries());
+      entry.id = crypto.randomUUID();
+      entry.createdAt = new Date().toISOString();
+      state.donors.push(entry);
+      save();
+      donorForm.reset();
+      render();
+      alert('Donor saved!');
+      goTab('directory');
+    });
+
+    // Forms: Request
+    const requestForm = document.getElementById('requestForm');
+    requestForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const fd = new FormData(requestForm);
+      const entry = Object.fromEntries(fd.entries());
+      entry.id = crypto.randomUUID();
+      entry.createdAt = new Date().toISOString();
+      state.requests.push(entry);
+      save();
+      requestForm.reset();
+      render();
+      alert('Request submitted!');
+      goTab('directory');
+    });
+
+    // Export / Import / Clear
+    function exportData(){
+      const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = Object.assign(document.createElement('a'), { href:url, download:'blood-bank-data.json' });
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+    document.getElementById('importFile').addEventListener('change', (e)=>{
+      const file = e.target.files[0]; if(!file) return;
+      const reader = new FileReader();
+      reader.onload = () => { try { state = JSON.parse(reader.result); save(); render(); alert('Import successful'); } catch { alert('Invalid file'); } };
+      reader.readAsText(file);
+      e.target.value = '';
+    });
+    function clearAll(){ if(confirm('This will delete all local data. Continue?')){ state = { donors:[], requests:[] }; save(); render(); } }
+
+    // Delete item helpers
+    function deleteDonor(id){ state.donors = state.donors.filter(x=>x.id!==id); save(); render(); }
+    function deleteRequest(id){ state.requests = state.requests.filter(x=>x.id!==id); save(); render(); }
+
+    // Filters
+    const filterDonorBlood = document.getElementById('filterDonorBlood');
+    const searchDonorCity = document.getElementById('searchDonorCity');
+    const filterReqBlood = document.getElementById('filterReqBlood');
+    const searchReqCity = document.getElementById('searchReqCity');
+
+    // Render tables & stats
+    function render(){
+      const donorsBody = document.querySelector('#donorsTable tbody');
+      const reqBody = document.querySelector('#requestsTable tbody');
+      const matchesBody = document.querySelector('#matchesTable tbody');
+      donorsBody.innerHTML = reqBody.innerHTML = matchesBody.innerHTML = '';
+
+      const donors = state.donors
+        .filter(d => !filterDonorBlood.value || d.blood===filterDonorBlood.value)
+        .filter(d => !searchDonorCity.value || (d.city||'').toLowerCase().includes(searchDonorCity.value.toLowerCase()));
+
+      const reqs = state.requests
+        .filter(r => !filterReqBlood.value || r.blood===filterReqBlood.value)
+        .filter(r => !searchReqCity.value || (r.city||'').toLowerCase().includes(searchReqCity.value.toLowerCase()));
+
+      // Fill donors table
+      donors.forEach(d => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHtml(d.name)}</td>
+          <td><span class="pill">${d.blood}</span></td>
+          <td>${escapeHtml(d.city||'')}</td>
+          <td><a href="tel:${d.phone}">${d.phone}</a></td>
+          <td>${fmtDate(d.lastDonation)}</td>
+          <td><button class="btn danger" onclick="deleteDonor('${d.id}')">Delete</button></td>
+        `;
+        donorsBody.appendChild(tr);
+      });
+
+      // Fill requests table
+      reqs.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHtml(r.patient)}</td>
+          <td><span class="pill">${r.blood}</span></td>
+          <td>${r.units||'—'}</td>
+          <td>${escapeHtml(r.city||'')}</td>
+          <td>${escapeHtml(r.urgency||'')}</td>
+          <td><a href="tel:${r.contact}">${r.contact}</a></td>
+          <td>
+            <div class="actions">
+              <button class="btn success" onclick='matchFor("${r.id}")'>Match</button>
+              <button class="btn danger" onclick='deleteRequest("${r.id}")'>Delete</button>
+            </div>
+          </td>
+        `;
+        reqBody.appendChild(tr);
+      });
+
+      // Stats
+      document.getElementById('stat-donors').textContent = state.donors.length;
+      document.getElementById('stat-requests').textContent = state.requests.length;
+      document.getElementById('stat-matches').textContent = countPotentialMatches();
+    }
+
+    // Matching logic
+    function matchFor(reqId){
+      const r = state.requests.find(x=>x.id===reqId);
+      if(!r) return;
+      const acceptable = COMP[r.blood] || [];
+      const results = state.donors
+        .filter(d => acceptable.includes(d.blood))
+        .map(d => ({
+          donor: d,
+          score: (r.city && d.city && r.city.toLowerCase()===d.city.toLowerCase() ? 50 : 0)
+                + Math.max(0, 30 - Math.min(30, daysSince(d.lastDonation)))
+                + (d.blood===r.blood ? 30 : 0)
+        }))
+        .sort((a,b)=>b.score-a.score);
+
+      const tbody = document.querySelector('#matchesTable tbody');
+      tbody.innerHTML = '';
+      results.forEach(({donor, score}) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHtml(donor.name)}</td>
+          <td><span class="pill">${donor.blood}</span></td>
+          <td>${escapeHtml(donor.city||'')}</td>
+          <td><a href="tel:${donor.phone}">${donor.phone}</a></td>
+          <td>${fmtDate(donor.lastDonation)}</td>
+          <td>${score}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      goTab('directory');
+    }
+
+    function countPotentialMatches(){
+      let c = 0;
+      state.requests.forEach(r => {
+        const acceptable = COMP[r.blood] || [];
+        c += state.donors.filter(d => acceptable.includes(d.blood)).length;
+      });
+      return c;
+    }
+
+    function seedDemoData(){
+      const donors = [
+        {name:'Aarav Mehta', age:28, gender:'Male', blood:'O+', phone:'9876543210', email:'', city:'Hyderabad', lastDonation: '2025-06-10', notes:''},
+        {name:'Isha Sharma', age:24, gender:'Female', blood:'A-', phone:'9123456780', email:'', city:'Hyderabad', lastDonation: '2025-07-25', notes:''},
+        {name:'Mohit Kumar', age:31, gender:'Male', blood:'B+', phone:'9988776655', email:'', city:'Mumbai', lastDonation: '2025-02-02', notes:''},
+        {name:'Sara Ali', age:22, gender:'Female', blood:'AB+', phone:'9090909090', email:'', city:'Hyderabad', lastDonation: '2025-05-30', notes:''},
+        {name:'Vikram Rao', age:35, gender:'Male', blood:'O-', phone:'9012345678', email:'', city:'Pune', lastDonation: '2024-12-15', notes:''}
+      ].map(d => ({...d, id: crypto.randomUUID(), createdAt: new Date().toISOString()}));
+
+      const requests = [
+        {patient:'Rohan Verma', blood:'A+', units:2, urgency:'Immediate', hospital:'Sunrise Hospital', city:'Hyderabad', contact:'9811111111', alt:'', notes:''},
+        {patient:'Priya Singh', blood:'O+', units:1, urgency:'Within 24 hours', hospital:'City Care', city:'Mumbai', contact:'9822222222', alt:'', notes:''}
+      ].map(r => ({...r, id: crypto.randomUUID(), createdAt: new Date().toISOString()}));
+
+      state = { donors, requests };
+      save();
+      render();
+      goTab('directory');
+    }
+
+    // XSS-safe rendering
+    function escapeHtml(str){
+      return (str||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m]));
+    }
+
+    // Initial
+    render();
+  </script>
+</body>
+</html>
