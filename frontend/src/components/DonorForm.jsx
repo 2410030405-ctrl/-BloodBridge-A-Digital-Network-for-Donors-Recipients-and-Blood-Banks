@@ -16,7 +16,7 @@ function DonorForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/donors", {
+      const response = await fetch("https://bloodbridge-a-digital-network-for-donors.onrender.com", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
