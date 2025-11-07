@@ -1,10 +1,4 @@
 {
-<<<<<<< HEAD
-  "devDependencies": {
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.16"
-=======
   "name": "backend",
   "version": "1.0.0",
   "description": "",
@@ -25,6 +19,5 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.3"
->>>>>>> fa1b98bcb651fb536acdf84100c4bdba826d3154
   }
 }
